@@ -25,10 +25,10 @@ function App() {
           </ProtectedRoute>
           <Route path='/login'>
             <Login/>
-        </Route>
+          </Route>
           <Route path='/'>
             <Redirect to='/login'/>
-        </Route>
+          </Route>
         </Switch>
       </Router>
     </div>

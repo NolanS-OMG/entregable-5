@@ -6,12 +6,12 @@ import PokeBallImage from './images/Pokebola.png';
 const Login = () => {
     const { register, handleSubmit } = useForm();
 
-    const obj = useAuth();
+    const { putUser } = useAuth();
 
     const history = useHistory();
 
     const submitFunction = (values) => {
-        obj.putUser(values.trainer);
+        putUser(values.trainer);
         if (values) {
             history.push('/pokedex');
         }
