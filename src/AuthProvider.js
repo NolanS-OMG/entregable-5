@@ -5,7 +5,7 @@ const authContext = createContext();
 const fakeAuthBackEnd = {
     user: '',
     changeUser: (callback) => {
-        setTimeout(callback, 100);
+        setTimeout(callback, 10);
     }
 }
 
@@ -23,10 +23,10 @@ const useProvideAuth = () => {
     }
 }
 
-export const ProvideAuth = ({children}) => {
+export const ProvideAuth = ({children, ...props}) => {
     const auth = useProvideAuth();
 
-    return( <authContext.Provider value = {auth}> {children} </authContext.Provider> )
+    return( <authContext.Provider value = {auth} {...props}> {children} </authContext.Provider> )
 }
 
 export const useAuth = () => useContext(authContext);

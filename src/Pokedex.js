@@ -86,21 +86,18 @@ const Pokedex = () => {
     const [pageChosen, setPageChosen] = useState(1);
 
     useEffect( () => {
-        console.log('0');
         if (typeof types !== typeof []) {
             promiseTypes.then(res => {setTypes(res.data.results)});
         }
     }, [types, promiseTypes] )
 
     useEffect( () => {
-        console.log('1');
         if (typeof allPokemons !== typeof []) {
             promiseAllPokemons.then(res => {setAllPokemons(res.data.results)})
         }
     }, [allPokemons, promiseAllPokemons] )
 
     useEffect( () => {
-        console.log('2');
         let posiblePokemons = [];
         if (pokemonSearch.length > 0) {
             allPokemons.forEach((pokemon) => {
