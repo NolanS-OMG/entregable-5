@@ -2,20 +2,11 @@ import { createContext, useContext, useState } from "react";
 
 const authContext = createContext();
 
-const fakeAuthBackEnd = {
-    user: '',
-    changeUser: (callback) => {
-        setTimeout(callback, 10);
-    }
-}
-
 const useProvideAuth = () => {
     const [user, setUser] = useState('');
 
     function putUser(newUser) {
-        fakeAuthBackEnd.changeUser( () => {
-            setUser(newUser);
-        } )
+        setUser(newUser);
     }
 
     return {
