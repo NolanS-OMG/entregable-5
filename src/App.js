@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import {HashRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import Login from './Login.js';
+import Pokedex from './Pokedex.js';
+import Pokemon from './Pokemon.js';
 
 function App() {
+  const [trainerName, setTrainerName] = useState('');
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className = "front-container">
+      <Router>
+        <Switch>
+          <Route path='/pokedex'>
+            <Pokedex trainer = {trainerName}/>
+            <Switch>
+              <Route path='/pokedex/pokemon/:pokemonId'>
+                <Pokemon/>
+              </Route>
+            </Switch>
+          </Route>
+          <Route path='/login'>
+            <Login setTrainer = {setTrainerName}/>
+        </Route>
+          <Route path='/'>
+            <Redirect to='/login'/>
+        </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

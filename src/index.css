@@ -1,13 +1,353 @@
-body {
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: texts;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  background-color: rgb(255, 171, 162);
+}
+
+@font-face {
+  font-family: texts;
+  src: url('./fonts/pixelmix.ttf');
+}
+
+@font-face {
+  font-family: titles;
+  src: url('./fonts/I-pixel-u.ttf');
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: titles;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.front-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+.login-container {
+  margin: auto;
+
+  width: 35%;
+  background-color: rgb(252, 232, 218);
+  border: solid 3px black;
+  border-radius: 7px;
+}
+
+.login-container form {
+  margin: 3%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+}
+
+.login-container form div {
+  width: 70%;
+}
+
+.login-container form button {
+  background-color: rgb(255, 17, 0);
+  border: solid black 2px;
+  border-radius: 5px;
+  width: 20%;
+  height: 100%;
+}
+
+.login-container form button:hover {
+  color: white;
+  border-color: rgb(255, 152, 152);
+}
+
+.login-titles {
+  margin: 3%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-titles div h4 {
+  font-size: 2rem;
+}
+
+.login-titles img {
+  width: 20%;
+}
+
+.login-titles div {
+  width: 75%;
+}
+
+.pokedex-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.searcher-container {
+  display: flex;
+  align-items: center;
+  border-bottom: solid 3px black;
+  height: 25vh;
+}
+
+.labels-container {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.labels-container label {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1%;
+}
+
+.labels-container label span {
+  width: 100%;
+  text-align: center;
+}
+
+.labels-container label input {
+  width: 85%;
+  margin: auto;
+  font-size: 1.05rem;
+  border: none;
+  padding-bottom: 0.5%;
+  border-bottom: solid 2px black;
+  border-radius: 0px;
+  background-color: transparent;
+}
+
+.labels-container label select {
+  width: 85%;
+  margin: auto;
+  font-size: 1.05rem;
+}
+
+.search-results-list {
+  position: absolute;
+  top: 100%;
+  left: 7.5%;
+  z-index: 1;
+  width: 85%;
+  background-color: rgb(255, 171, 162);
+  border-bottom: solid 1px black;
+  border-left: solid 1px black;
+  border-right: solid 1px black;
+}
+
+.search-results-list li {
+  background-color: transparent;
+  padding-left: 0.5%;
+}
+
+.search-results-list li:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.search-results-list li:active {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.image-container {
+  width: 10%;
+  margin: auto;
+  display: flex;
+  background-color: transparent;
+  border: none;
+  border-radius: 7px;
+}
+
+.image-container:hover {
+  background-color: rgba(255,255,255,0.3);
+  cursor: pointer;
+}
+
+.image-container:active {
+  background-color: rgba(255,255,255,0.7);
+}
+
+.image-container img {
+  width: 90%;
+  margin: 5%;
+}
+
+.title-container {
+  width: 35%;
+}
+
+.title-container h1 {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.title-container p {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 5%;
+  text-align: justify;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.pokemons-container {
+  height: 70vh;
+  padding: 1%;
+  background-color: rgb(252, 232, 218);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.pokemon-card {
+  display: flex;
+  flex-direction: column;
+  border-left: dashed 3px black;
+  border-right: dashed 3px black;
+  transition: all 0.2s;
+}
+
+.pokemon-card:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-left: solid 3px black;
+  border-right: solid 3px black;
+  cursor: pointer;
+}
+
+.pokemon-card h4 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.pokemon-card div {
+  height: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pokemon-card div img {
+  height: 100%;
+  margin: auto;
+}
+
+.pokemon-card div p {
+  width: 95%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pokemon-card div p b {
+  margin-right: 5%;
+}
+
+.pokemon-card div p span {
+  width: 90%;
+  margin: auto;
+}
+
+.pages-container {
+  position: sticky;
+  top: 90vh;
+  width: 100%;
+  height: 10vh;
+  border-top: solid 3px black;
+  display: flex;
+  justify-content: center;
+}
+
+.pages-container ul {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pages-container li {
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 0.5%;
+  background-color: rgb(252, 232, 218);
+  border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.pages-container li:hover {
+  background-color: rgb(192, 20, 1);
+  cursor: pointer;
+  color: rgb(252, 232, 218);
+  padding: 0.8%;
+}
+
+.pokemon-container {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.pokemon {
+  width: 40%;
+  margin: auto;
+  background-color: rgb(252, 232, 218);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border: solid 3px black;
+  border-radius: 9px;
+}
+
+.pokemon h4 {
+  width: 90%;
+  margin: auto;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.pokemon-image-container {
+  width: 100%;
+  display: flex;
+}
+
+.pokemon-image-container img {
+  width: 35%;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+.pokemon-stats {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pokemon-stats div {
+  width: 40%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+}
+
+.pokemon-habilities {
+  width: 95%;
 }
