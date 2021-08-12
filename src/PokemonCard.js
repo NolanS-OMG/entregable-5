@@ -19,20 +19,19 @@ const PokemonCard = ( {data} ) => {
         history.push(`${url}/pokemon/${(typeof pokemon === typeof {}) ? pokemon.id:'1'}`);
     }
 
-    const [pokemonPromise, setPokemonPromise] = useState(get(data.url));
+    const pokemonPromise= get(data.url);
     const [pokemon, setPokemon] = useState('');
     const [pokemonImage, setPokemonImage] = useState('');
 
     useEffect( () => {
-        pokemonPromise.then(res => {
-            setPokemon(res.data);
-        })
-    }, [pokemonPromise] )
-    useEffect( () => {
         if (typeof pokemon === typeof {}) {
             setPokemonImage(pokemon.sprites.front_default);
+        } else {
+            pokemonPromise.then(res => {
+                setPokemon(res.data);
+            })
         }
-    }, [pokemon] )
+    }, [pokemon, pokemonPromise] )
 
     const types = (typeof pokemon === typeof {}) ? pokemon.types.map( (element,index,array) => {
         return capitalize(element.type.name)

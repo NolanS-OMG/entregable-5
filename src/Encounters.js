@@ -10,20 +10,14 @@ const Encounters = () => {
         return promise;
     }
 
-    const pokemonEncountersPromise = get(`https://pokeapi.co/api/v2/pokemon/${params.pokemonId}/encounters`);
-
     const [pokemonEncounters, setPokemonEncounters] = useState('');
 
     const [encountersPage, setEncountersPage] = useState(1);
 
     useEffect( () => {
         if (typeof pokemonEncounters !== typeof []) {
-            pokemonEncountersPromise.then(res => {setPokemonEncounters(res.data)});
-        }
-    }, [pokemonEncounters] )
-
-    useEffect( () => {
-        if (typeof pokemonEncounters === typeof []) {
+            get(`https://pokeapi.co/api/v2/pokemon/${params.pokemonId}/encounters`).then(res => {setPokemonEncounters(res.data)});
+        } else {
             if (encountersPage <= 0) {
                 setEncountersPage(1);
             }
@@ -31,7 +25,7 @@ const Encounters = () => {
                 setEncountersPage(Math.ceil(pokemonEncounters.length/5));
             }
         }
-    }, [encountersPage] )
+    }, [pokemonEncounters, encountersPage, params.pokemonId] )
 
     const encounters = (typeof pokemonEncounters === typeof []) ? pokemonEncounters.map( (element,index) => {
         return( (index >= (encountersPage-1)*5 && index+1 <= (encountersPage*5)) && <span key = {element.location_area.name + `${index+1}`}><b>{index+1}:</b> {element.location_area.name}</span> )

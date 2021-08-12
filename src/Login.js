@@ -1,12 +1,12 @@
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 import PokeBallImage from './images/Pokebola.png';
 
 const Login = () => {
-    const {register, handleSubmit} = useForm();
+    const { register, handleSubmit } = useForm();
 
-    const {putUser} = useAuth();
+    const { putUser } = useAuth();
 
     const history = useHistory();
 

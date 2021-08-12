@@ -74,11 +74,11 @@ const Pokedex = () => {
         }
     }
 
-    const [promiseTypes, setPromiseTypes] = useState(get('https://pokeapi.co/api/v2/type/?offset=0&limit=20'));
-    const [promiseAllPokemons, setPromiseAllPokemons] = useState(get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1118'));
+    const promiseTypes= get('https://pokeapi.co/api/v2/type/?offset=0&limit=20');
+    const promiseAllPokemons = get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1118');
 
-    const [types, setTypes] = useState([]);
-    const [allPokemons, setAllPokemons] = useState([]);
+    const [types, setTypes] = useState('');
+    const [allPokemons, setAllPokemons] = useState('');
     const [pokemonSearch, setPokemonSearch] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const [pokemonsSearched, setPokemonsSearched] = useState([]);
@@ -86,11 +86,21 @@ const Pokedex = () => {
     const [pageChosen, setPageChosen] = useState(1);
 
     useEffect( () => {
-        promiseTypes.then(res => {setTypes(res.data.results)});
-        promiseAllPokemons.then(res => {setAllPokemons(res.data.results)})
-    }, [promiseTypes, promiseAllPokemons] )
+        console.log('0');
+        if (typeof types !== typeof []) {
+            promiseTypes.then(res => {setTypes(res.data.results)});
+        }
+    }, [types, promiseTypes] )
 
     useEffect( () => {
+        console.log('1');
+        if (typeof allPokemons !== typeof []) {
+            promiseAllPokemons.then(res => {setAllPokemons(res.data.results)})
+        }
+    }, [allPokemons, promiseAllPokemons] )
+
+    useEffect( () => {
+        console.log('2');
         let posiblePokemons = [];
         if (pokemonSearch.length > 0) {
             allPokemons.forEach((pokemon) => {
@@ -106,7 +116,7 @@ const Pokedex = () => {
         }
     }, [pokemonSearch] )
 
-    const typesOptions = types.map( (type) => { return( <option key={type.name} value={capitalize(type.name)}>{capitalize(type.name)}</option> ) } )
+    const typesOptions = (typeof types === typeof []) ? types.map( (type) => { return( <option key={type.name} value={capitalize(type.name)}>{capitalize(type.name)}</option> ) } ) : [];
     const pokemonsOptions = pokemonsSearched.map( (pokemon,index) => { return( index < 8 && <li key={pokemon.name} onClick={()=>{setPokemonSearch(pokemon.name)}} >{capitalize(pokemon.name)}</li> ) } )
     const pokemonsCards = pokemonsShowed.map( (pokemon,index) => {return (( index >= (pageChosen-1)*4 && index < pageChosen*4 ) && <PokemonCard key={pokemon.name} data = {pokemon} />)} )
     const pagesIndex = pokemonsShowed.map( (pokemon,index,array) => {return(( (index+1 >= pageChosen-5) && (index+1<=pageChosen+5) && index+1 <= Math.ceil(array.length/4) ) &&  <li key={pokemon.name} onClick = {() => {setPageChosen(index+1)}}>{index+1}</li>)} )
