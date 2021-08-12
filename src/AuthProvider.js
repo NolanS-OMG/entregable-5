@@ -12,7 +12,7 @@ const fakeAuthBackEnd = {
 const useProvideAuth = () => {
     const [user, setUser] = useState('');
 
-    const putUser = (newUser) => {
+    function putUser(newUser) {
         fakeAuthBackEnd.changeUser( () => {
             setUser(newUser);
         } )
