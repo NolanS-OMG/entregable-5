@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useRouteMatch, withRouter } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-const PokemonCard = ( {history, data} ) => {
+const PokemonCard = ( {data} ) => {
     const capitalize = (str) => {
         return str[0].toUpperCase() + str.slice(1,str.length).toLowerCase();
     }
@@ -11,7 +11,9 @@ const PokemonCard = ( {history, data} ) => {
         return promise;
     }
 
-    const {path, url} = useRouteMatch();
+    const {url} = useRouteMatch();
+
+    const history = useHistory();
 
     const click = () => {
         history.push(`${url}/pokemon/${(typeof pokemon === typeof {}) ? pokemon.id:'1'}`);
@@ -51,4 +53,4 @@ const PokemonCard = ( {history, data} ) => {
     )
 }
 
-export default withRouter(PokemonCard);
+export default PokemonCard;

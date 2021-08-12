@@ -1,25 +1,30 @@
-import { useState } from 'react';
+import ProtectedRoute from './ProtectedRoute.js';
 import {HashRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
+import Encounters from './Encounters.js';
 import Login from './Login.js';
 import Pokedex from './Pokedex.js';
 import Pokemon from './Pokemon.js';
 
 function App() {
-  const [trainerName, setTrainerName] = useState('');
   return (
     <div className = "front-container">
       <Router>
         <Switch>
-          <Route path='/pokedex'>
-            <Pokedex trainer = {trainerName}/>
+          <ProtectedRoute path='/pokedex'>
+            <Pokedex/>
             <Switch>
-              <Route path='/pokedex/pokemon/:pokemonId'>
+              <ProtectedRoute path='/pokedex/pokemon/:pokemonId'>
                 <Pokemon/>
-              </Route>
+                <Switch>
+                  <ProtectedRoute path = '/pokedex/pokemon/:pokemonId/encounters'>
+                    <Encounters/>
+                  </ProtectedRoute>
+                </Switch>
+              </ProtectedRoute>
             </Switch>
-          </Route>
+          </ProtectedRoute>
           <Route path='/login'>
-            <Login setTrainer = {setTrainerName}/>
+            <Login/>
         </Route>
           <Route path='/'>
             <Redirect to='/login'/>

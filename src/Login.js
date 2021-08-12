@@ -1,13 +1,17 @@
 import {useForm} from 'react-hook-form';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from './AuthProvider';
 import PokeBallImage from './images/Pokebola.png';
-import Pokemon from './Pokemon';
 
-const Login = ({ history, setTrainer }) => {
+const Login = () => {
     const {register, handleSubmit} = useForm();
 
+    const {putUser} = useAuth();
+
+    const history = useHistory();
+
     const submitFunction = (values) => {
-        setTrainer(values.trainer);
+        putUser(values.trainer);
         if (values) {
             history.push('/pokedex');
         }
@@ -35,4 +39,4 @@ const Login = ({ history, setTrainer }) => {
     )
 }
 
-export default withRouter(Login);
+export default Login;

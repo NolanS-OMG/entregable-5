@@ -307,7 +307,7 @@ ul {
 }
 
 .pokemon {
-  width: 40%;
+  width: 55%;
   margin: auto;
   background-color: rgb(252, 232, 218);
   display: flex;
@@ -330,7 +330,7 @@ ul {
 }
 
 .pokemon-image-container img {
-  width: 35%;
+  width: 25%;
   margin: auto;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
@@ -350,4 +350,102 @@ ul {
 
 .pokemon-habilities {
   width: 95%;
+}
+
+.pokemon-moves {
+  width: 95%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.pokemon-moves b {
+  width: 95%;
+  margin: auto;
+  text-align: center;
+}
+
+.pokemon-moves span {
+  width: 45%;
+  margin: auto;
+}
+
+.pokemon-moves div {
+  width: 95%;
+  margin: 2.5%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.pokemon-moves div button {
+  width: 35%;
+  margin: auto;
+  background-color: rgb(192, 20, 1);
+  border: solid 1px black;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.pokemon-moves div button:hover {
+  background-color: rgb(255, 171, 162);
+  color: rgb(252, 232, 218);
+  flex-grow: 0.2;
+}
+
+.pokemon-links {
+  position: absolute;
+  top: 3%;
+  left: 1%;
+  width: 21%;
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemon-links a {
+  width: 90%;
+  padding: 2.5%;
+  margin: 2.5%;
+  text-align: center;
+  background-color: rgb(255, 171, 162);
+  border: solid 3px black;
+  border-radius: 5px;
+}
+
+.pokemon-encounters {
+  position: absolute;
+  top: 20%;
+  left: 1%;
+  width: 20.5%;
+  height: 60%;
+  background-color: rgb(255, 171, 162);
+  border: solid 3px black;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  text-align: center;
+}
+
+.pokemon-encounters span {
+  width: 95%;
+  margin: auto;
+  text-align: left;
+}
+
+.pokemon-encounters div {
+  width: 95%;
+  margin: auto;
+}
+
+.pokemon-encounters div button {
+  width: 35%;
+  margin: auto;
+  background-color: rgb(192, 20, 1);
+  border: solid 1px black;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.pokemon-encounters div button:hover {
+  background-color: rgb(255, 171, 162);
+  color: rgb(252, 232, 218);
+  flex-grow: 0.2;
 }

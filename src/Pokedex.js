@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import PokemonCard from './PokemonCard.js'
 import PokeBallImage from './images/Pokebola.png';
+import { useAuth } from './AuthProvider.js';
 
-const Pokedex = ({trainer}) => {
+const Pokedex = () => {
     const {register, handleSubmit} = useForm();
+
+    const {user} = useAuth();
 
     function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
 
@@ -81,7 +84,6 @@ const Pokedex = ({trainer}) => {
     const [pokemonsSearched, setPokemonsSearched] = useState([]);
     const [pokemonsShowed, setPokemonsShowed] = useState([]);
     const [pageChosen, setPageChosen] = useState(1);
-    const [display, setDisplay] = useState({display:'none'});
 
     useEffect( () => {
         promiseTypes.then(res => {setTypes(res.data.results)});
@@ -116,7 +118,7 @@ const Pokedex = ({trainer}) => {
             <form className='searcher-container' onSubmit = {handleSubmit( submitFunction )}>
                 <div className='title-container'>
                     <h1>POKEDEX</h1>
-                    <p>Bienvenido {trainer}. Puedes buscar un pokemon por su nombre, filtrar por su tipo, o ambas</p>
+                    <p>Bienvenido {user}. Puedes buscar un pokemon por su nombre, filtrar por su tipo, o ambas</p>
                 </div>
                 <div className='labels-container'>
                     <label>
