@@ -22,9 +22,9 @@ const Pokedex = () => {
     }
 
     const submitFunction = (values) => {
+        console.log(values)
         setIsSearching(false);
-        if (values.name.length > 0) {
-            console.log(values.name, isNumber(values.name));
+        if (values.name.length) {
             if (isNumber(values.name)) {
                 setPokemonsShowed([ {url:`https://pokeapi.co/api/v2/pokemon/${values.name}`} ])
             } else if (pokemonsSearched.length > 1) {
@@ -59,7 +59,7 @@ const Pokedex = () => {
                 setPokemonsShowed(pokemonsSearched);
             }
         } else {
-            if (values.type.length > 0) {
+            if (values.type.length) {
                 get(`https://pokeapi.co/api/v2/type/${values.type.toLowerCase()}/`).then(
                     res => {
                         let array = [];
