@@ -10,8 +10,6 @@ const Pokedex = () => {
 
     const {user} = useAuth();
 
-    function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
-
     const capitalize = (str) => {
         return str[0].toUpperCase() + str.slice(1,str.length).toLowerCase();
     }
@@ -21,88 +19,114 @@ const Pokedex = () => {
         return promise;
     }
 
+    const sortPokemonByAlphabeth = (pokemon1, pokemon2) => {
+        if (pokemon1.name > pokemon2.name) {
+            return 1
+        }
+        if (pokemon1.name < pokemon2.name) {
+            return -1
+        }
+        return 0
+    }
+
     const submitFunction = (values) => {
-        console.log(values)
-        setIsSearching(false);
-        if (values.name.length) {
-            if (isNumber(values.name)) {
-                setPokemonsShowed([ {url:`https://pokeapi.co/api/v2/pokemon/${values.name}`} ])
-            } else if (pokemonsSearched.length > 1) {
-                if (values.type.length > 0) {
-                    get(`https://pokeapi.co/api/v2/type/${values.type.toLowerCase()}/`).then(
-                        res => {
-                            let array = [];
-                            res.data.pokemon.forEach( (element) => {
-                                for (let i = 0; i < pokemonsSearched.length; i++) {
-                                    if (pokemonsSearched[i].name === element.pokemon.name) {
-                                        array.push(element.pokemon);
-                                    }
+        setIsSearching(false)
+        if (values.type) {
+            get(`https://pokeapi.co/api/v2/type/${values.type.toLowerCase()}/`).then(
+                res => {
+                    let array = [];
+                    res.data.pokemon.forEach( (element) => {
+                        if (pokemonsSearched.length > 0) {
+                            for (let i = 0; i < pokemonsSearched.length; i++) {
+                                if (pokemonsSearched[i] === element.pokemon.name) {
+                                    array.push(element.pokemon);
                                 }
-                            } )
-                            setPokemonsShowed(array);
-                        });
-                } else {
-                    setPokemonsShowed(pokemonsSearched);
-                }
-            } else if (pokemonsSearched.length === 0) {
-                if (values.type.length > 0) {
-                    get(`https://pokeapi.co/api/v2/type/${values.type.toLowerCase()}/`).then(
-                        res => {
-                            let array = [];
-                            res.data.pokemon.forEach( (element) => {
-                                array.push(element.pokemon);
-                            } )
-                            setPokemonsShowed(array);
-                        });
-                }
+                            }
+                        } else {
+                            array.push(element.pokemon);
+                        }
+                    } )
+                    if (values.sortBy) {
+                        array.sort(sortPokemonByAlphabeth)
+                    }
+                    if (values.sortBy === 'contra') {
+                        array.reverse()
+                    }
+                    setPokemonsShowed(array);
+                });
+        } else if (values.name) {
+            if (pokemonsSearched.length > 0) {
+                get(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1118`).then(
+                res => {
+                    let array = res.data.results.filter((pokemon) => {
+                        for (let i=0; i<pokemonsSearched.length; i++) {
+                            if (pokemon.name === pokemonsSearched[i]) {
+                                return true
+                            }
+                        }
+                        return false
+                    })
+                    if (values.sortBy) {
+                        array.sort(sortPokemonByAlphabeth)
+                    }
+                    if (values.sortBy === 'contra') {
+                        array.reverse()
+                    }
+                    setPokemonsShowed(array);
+                })
             } else {
-                setPokemonsShowed(pokemonsSearched);
+                setPokemonsShowed([ {name:values.name, url:`https://pokeapi.co/api/v2/pokemon/${values.name}`} ])
             }
         } else {
-            if (values.type.length) {
-                get(`https://pokeapi.co/api/v2/type/${values.type.toLowerCase()}/`).then(
-                    res => {
-                        let array = [];
-                        res.data.pokemon.forEach( (element) => {
-                            array.push(element.pokemon);
-                        } )
-                        setPokemonsShowed(array);
-                    });
-            } else {
-                setPokemonsShowed(allPokemons);
-            }
+            get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1118').then(
+                res => {
+                    let array = [...res.data.results]
+                    if (values.sortBy) {
+                        array.sort(sortPokemonByAlphabeth)
+                    }
+                    if (values.sortBy === 'contra') {
+                        array.reverse()
+                    }
+                    setPokemonsShowed(array)
+                }
+            )
         }
     }
 
-    const promiseTypes= get('https://pokeapi.co/api/v2/type/?offset=0&limit=20');
-    const promiseAllPokemons = get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1118');
-
     const [types, setTypes] = useState('');
-    const [allPokemons, setAllPokemons] = useState('');
     const [pokemonSearch, setPokemonSearch] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const [pokemonsSearched, setPokemonsSearched] = useState([]);
     const [pokemonsShowed, setPokemonsShowed] = useState([]);
     const [pageChosen, setPageChosen] = useState(1);
 
-    useEffect( () => {
-        if (typeof types !== typeof []) {
-            promiseTypes.then(res => {setTypes(res.data.results)});
-        }
-    }, [types, promiseTypes] )
+    const [pokemonNames, setPokemonNames] = useState()
 
     useEffect( () => {
-        if (typeof allPokemons !== typeof []) {
-            promiseAllPokemons.then(res => {setAllPokemons(res.data.results)})
+        if (typeof pokemonNames !== typeof []) {
+            get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1118').then(
+                res => {
+                    let array = []
+                    res.data.results.forEach((pokemon)=>{
+                        array.push(pokemon.name)
+                    })
+                    setPokemonNames(array)
+                });
         }
-    }, [allPokemons, promiseAllPokemons] )
+    }, [pokemonNames] )
+
+    useEffect( () => {
+        if (typeof types !== typeof []) {
+            get('https://pokeapi.co/api/v2/type/?offset=0&limit=20').then(res => {setTypes(res.data.results)});
+        }
+    }, [types] )
 
     useEffect( () => {
         let posiblePokemons = [];
         if (pokemonSearch.length > 0) {
-            allPokemons.forEach((pokemon) => {
-                if (capitalize(pokemon.name.slice(0,pokemonSearch.length)) === capitalize(pokemonSearch)) {
-                    posiblePokemons.push(pokemon);
+            pokemonNames.forEach((name) => {
+                if (name.toLowerCase().search(pokemonSearch.toLowerCase()) >= 0) {
+                    posiblePokemons.push(name);
                 }
             });
         }
@@ -111,12 +135,14 @@ const Pokedex = () => {
         } else {
             setPokemonsSearched(posiblePokemons);
         }
-    }, [pokemonSearch] )
+    }, [pokemonSearch, pokemonNames] )
+
+    const NUMBER_OF_PAGES = Math.ceil(pokemonsShowed.length/4)
 
     const typesOptions = (typeof types === typeof []) ? types.map( (type) => { return( <option key={type.name} value={capitalize(type.name)}>{capitalize(type.name)}</option> ) } ) : [];
-    const pokemonsOptions = pokemonsSearched.map( (pokemon,index) => { return( index < 8 && <li key={pokemon.name} onClick={()=>{setPokemonSearch(pokemon.name)}} >{capitalize(pokemon.name)}</li> ) } )
-    const pokemonsCards = pokemonsShowed.map( (pokemon,index) => {return (( index >= (pageChosen-1)*4 && index < pageChosen*4 ) && <PokemonCard key={pokemon.name} data = {pokemon} />)} )
-    const pagesIndex = pokemonsShowed.map( (pokemon,index,array) => {return(( (index+1 >= pageChosen-5) && (index+1<=pageChosen+5) && index+1 <= Math.ceil(array.length/4) ) &&  <li key={pokemon.name} onClick = {() => {setPageChosen(index+1)}}>{index+1}</li>)} )
+    const pokemonsOptions = pokemonsSearched.map( (pokemonName,index) => { return( index < 8 && <li key={pokemonName} onClick={()=>{setPokemonSearch(pokemonName)}} >{capitalize(pokemonName)}</li> ) } )
+    const pokemonsCards = pokemonsShowed.map( (pokemon,index) => {return (( index >= (pageChosen-1)*4 && index < pageChosen*4 ) && <PokemonCard key={pokemon.name} data = {pokemon} />)})
+    const pagesIndex = pokemonsShowed.map( (pokemon,index) => {return(( (index+1 >= pageChosen-5) && (index+1<=pageChosen+5) && index+1 <= NUMBER_OF_PAGES ) && <li key={pokemon.name} onClick = {() => {setPageChosen(index+1)}} style={{backgroundColor: pageChosen===(index+1) && 'rgb(192, 20, 1)', color: pageChosen===(index+1) && 'rgb(252, 232, 218)' }}>{index+1}</li>)} )
 
     return (
         <div className='pokedex-container' onClick = {() => {
@@ -131,13 +157,15 @@ const Pokedex = () => {
                     <label>
                         <span>ID o NOMBRE</span>
                         <input placeholder='eg. Pikachu, 24' 
-                        {...register('name') } 
+                        {...register('name') }
                         value = {pokemonSearch} 
                         onChange = {(e) => {
                             setIsSearching(true);
                             setPokemonSearch(e.target.value);
                         }} />
-                        <ul className='search-results-list' style = {isSearching ? {display:'block'} : {display:'none'}}>{pokemonsOptions}</ul>
+                        <ul className='search-results-list' style = {isSearching ? {display:'block'} : {display:'none'}}>
+                            {pokemonsOptions}
+                        </ul>
                     </label>
                     <label>
                         <span>TIPO</span>
@@ -146,13 +174,39 @@ const Pokedex = () => {
                             {typesOptions}
                         </select>
                     </label>
+                    <label>
+                        <span>Ordenar: </span>
+                        <select {...register('sortBy') }>
+                            <option value=''>Sin orden</option>
+                            <option value='favor'>A favor del alfabeto</option>
+                            <option value='contra'>En contra del alfabeto</option>
+                        </select>
+                    </label>
                 </div>
                 <button className='image-container' type='submit'><img src={PokeBallImage} alt='Pokebola'/></button>
             </form>
             <div className='pokemons-container'>
                 {pokemonsCards}
             </div>
-            <div className='pages-container'><ul>{pagesIndex}</ul></div>
+            <div className='pages-container'>
+                <ul>
+                    <li onClick={() => {
+                        if (pageChosen > 1) {
+                            setPageChosen(pageChosen-1)
+                        }
+                    }}>&lt;</li>
+                    {pageChosen-5 > 1 && <li onClick={()=>{setPageChosen(1)}}>1</li>}
+                    {pageChosen-6 > 1 && '...'}
+                    {pagesIndex}
+                    {pageChosen+6 < NUMBER_OF_PAGES && '...'}
+                    {pageChosen+5 < NUMBER_OF_PAGES && <li onClick={()=>{setPageChosen(NUMBER_OF_PAGES)}}>{NUMBER_OF_PAGES}</li>}
+                    <li onClick={() => {
+                        if (pageChosen < NUMBER_OF_PAGES) {
+                            setPageChosen(pageChosen+1)
+                        }
+                    }}>&gt;</li>
+                </ul>
+                </div>
         </div>
     )
 }
